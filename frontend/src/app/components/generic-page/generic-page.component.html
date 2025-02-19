@@ -1,0 +1,27 @@
+<div class="generic-page w-full h-full">
+  <div class="header">
+    <p class="title">{{ title }}</p>
+    <p-button (onClick)="showDialog()">Criar</p-button>
+  </div>
+
+  <div class="card">
+    <p-table [value]="data" showGridlines stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template #header>
+        <ng-container *ngTemplateOutlet="tableHeaders"></ng-container>
+      </ng-template>
+      <ng-template #body let-item>
+        <ng-container *ngTemplateOutlet="tableBody; context: { $implicit: item }"></ng-container>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog [(visible)]="isDialogVisible" [modal]="true" [style]="{ width: '25rem' }">
+    <ng-template #header>{{ dialogHeader }}</ng-template>
+    <ng-template #content>
+      <ng-container *ngTemplateOutlet="dialogContent"></ng-container>
+    </ng-template>
+    <ng-template #footer>
+      <ng-container *ngTemplateOutlet="dialogFooter"></ng-container>
+    </ng-template>
+  </p-dialog>
+</div>

@@ -1,0 +1,39 @@
+::ng-deep .generic-page {
+  padding: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #333333;
+      margin: 0;
+    }
+  }
+
+  .header-text {
+    color: #6b7280;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    width: 6rem;
+  }
+
+  .form-input {
+    flex: 1;
+  }
+}

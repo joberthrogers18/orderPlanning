@@ -1,9 +1,11 @@
 import { ButtonModule } from 'primeng/button';
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { GenericPageComponent } from '../../components/generic-page/generic-page.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-buyers',
@@ -13,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     DialogModule,
     InputTextModule,
     FormsModule,
+    GenericPageComponent
   ],
   templateUrl: './buyers.component.html',
   styleUrl: './buyers.component.scss',
