@@ -51,6 +51,11 @@ export class BuyersComponent implements OnInit {
       },
       () => {
         this.loading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Erro ao carregar clientes! Tente novamente mais tarde!',
+        });
       }
     );
   }
