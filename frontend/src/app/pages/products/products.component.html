@@ -1,0 +1,68 @@
+<app-generic-page
+  [title]="'Produtos'"
+  [data]="products"
+  [tableHeaders]="productTableHeaders"
+  [tableBody]="productTableBody"
+  [dialogHeader]="'Novo Produto'"
+  [dialogContent]="productDialogContent"
+  [dialogFooter]="productDialogFooter"
+></app-generic-page>
+
+<ng-template #productTableHeaders>
+  <tr>
+    <th>Id</th>
+    <th>Nome</th>
+    <th>Preço</th>
+  </tr>
+</ng-template>
+
+<ng-template #productTableBody let-product>
+  <tr>
+    <td>{{ product.id }}</td>
+    <td>{{ product.name }}</td>
+    <td>{{ product.price }}</td>
+  </tr>
+</ng-template>
+
+<ng-template #productDialogContent>
+  <div class="form-group column">
+    <div class="w-full">
+      <label for="name" class="form-label">Nome</label>
+      <input
+        pInputText
+        id="name"
+        class="form-input w-full"
+        autocomplete="off"
+        [(ngModel)]="nameProduct"
+      />
+    </div>
+    
+    <div class="w-full">
+      <label for="price" class="form-label">Preço</label>
+      <p-inputnumber
+        class="w-full"
+        [(ngModel)]="priceProduct"
+        inputId="minmaxfraction"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="5"
+      />
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #productDialogFooter>
+  <p-button
+    label="Cancelar"
+    [text]="true"
+    severity="secondary"
+    (click)="isDialogVisible = false"
+  />
+  <p-button
+    label="Salvar"
+    [outlined]="true"
+    severity="secondary"
+    (click)="isDialogVisible = false"
+    [disabled]="false"
+  />
+</ng-template>

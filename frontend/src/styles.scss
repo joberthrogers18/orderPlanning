@@ -8,3 +8,12 @@ body,
   padding: 0;
   box-sizing: border-box;
 }
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.w-full {
+  width: 100%;
+}
