@@ -1,3 +1,8 @@
-<div class="card flex justify-center">
-  <p-button label="Check" />
+<div class="w-full p-0">
+  <p-menubar [model]="items">
+    <ng-template #start>
+      <p class="title-bar">Order Planning</p>
+    </ng-template>
+  </p-menubar>
 </div>
+<router-outlet></router-outlet>

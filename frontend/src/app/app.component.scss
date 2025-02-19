@@ -1,0 +1,20 @@
+::ng-deep .p-menubar {
+  background-color: #1976d2 !important;
+  border-radius: 0 !important;
+  
+  .p-menubar-item-label {
+    color: white !important;
+  }
+}
+
+::ng-deep .p-menubar-item-content .pi {
+    color: white !important;
+}
+
+.title-bar {
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 120px;
+}
