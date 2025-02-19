@@ -19,10 +19,12 @@ export class AppComponent implements OnInit {
       {
         label: 'Pedidos',
         icon: 'pi pi-home',
+        routerLink: ['/'] 
       },
       {
         label: 'Fornecedores',
         icon: 'pi pi-fw pi-truck',
+        routerLink: ['/suppliers']
       },
       {
         label: 'Clientes',

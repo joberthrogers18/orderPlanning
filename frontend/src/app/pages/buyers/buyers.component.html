@@ -1,0 +1,61 @@
+<div class="buyers w-full h-full">
+  <div class="header">
+    <p class="title">Clientes</p>
+    <p-button (onClick)="showDialog()">Criar</p-button>
+  </div>
+
+  <div class="card">
+    <p-table
+      [value]="buyers"
+      showGridlines
+      stripedRows
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Id</th>
+          <th>Nome</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-buyer>
+        <tr>
+          <td>{{ buyer.id }}</td>
+          <td>{{ buyer.name }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog
+    [(visible)]="isDialogVisible"
+    [modal]="true"
+    [style]="{ width: '25rem' }"
+  >
+    <ng-template #header> Novo Cliente </ng-template>
+    <div class="form-group">
+      <label for="username" class="form-label">Nome</label>
+      <input
+        pInputText
+        id="username"
+        class="form-input"
+        autocomplete="off"
+        [(ngModel)]="nameClient"
+      />
+    </div>
+    <ng-template #footer>
+      <p-button
+        label="Cancel"
+        [text]="true"
+        severity="secondary"
+        (click)="isDialogVisible = false"
+      />
+      <p-button
+        label="Save"
+        [outlined]="true"
+        severity="secondary"
+        (click)="isDialogVisible = false"
+        [disabled]=""
+      />
+    </ng-template>
+  </p-dialog>
+</div>
