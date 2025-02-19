@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -5,7 +6,7 @@ import { MenubarModule } from 'primeng/menubar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, MenubarModule],
+  imports: [RouterModule, MenubarModule, HttpClientModule],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

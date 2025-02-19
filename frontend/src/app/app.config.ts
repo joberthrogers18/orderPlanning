@@ -1,4 +1,5 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
                   darkModeSelector: false || 'none'
               }
             }
-        })
+        }),
+    importProvidersFrom(HttpClientModule)
   ]
 };
