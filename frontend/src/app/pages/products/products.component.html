@@ -6,6 +6,7 @@
   [dialogHeader]="'Novo Produto'"
   [dialogContent]="productDialogContent"
   [dialogFooter]="productDialogFooter"
+  [isDialogVisible]="isDialogVisible"
 ></app-generic-page>
 
 <ng-template #productTableHeaders>
@@ -45,7 +46,7 @@
         inputId="minmaxfraction"
         mode="decimal"
         [minFractionDigits]="2"
-        [maxFractionDigits]="5"
+        [maxFractionDigits]="2"
       />
     </div>
   </div>
@@ -62,7 +63,9 @@
     label="Salvar"
     [outlined]="true"
     severity="secondary"
-    (click)="isDialogVisible = false"
+    (click)="createProduct()"
     [disabled]="false"
   />
 </ng-template>
+
+<p-toast></p-toast>

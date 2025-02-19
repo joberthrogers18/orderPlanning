@@ -29,8 +29,7 @@ export class GenericPageComponent {
   @Input() dialogHeader!: string;
   @Input() dialogContent!: TemplateRef<any>;
   @Input() dialogFooter!: TemplateRef<any>;
-
-  isDialogVisible: boolean = false;
+  @Input() isDialogVisible!: boolean;
 
   showDialog() {
     this.isDialogVisible = true;

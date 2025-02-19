@@ -33,7 +33,7 @@ import { MessageService } from 'primeng/api';
 })
 export class BuyersComponent implements OnInit {
   buyers: Buyer[] = [];
-  isDialogVisible: boolean = false;
+  isDialogVisible!: boolean;
   nameClient: string = '';
   loading: boolean = false;
 

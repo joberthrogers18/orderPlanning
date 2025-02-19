@@ -15,7 +15,7 @@
     </p-table>
   </div>
 
-  <p-dialog [(visible)]="isDialogVisible" [modal]="true" [style]="{ width: '25rem' }">
+  <p-dialog [visible]="isDialogVisible" [modal]="true" [style]="{ width: '25rem' }">
     <ng-template #header>{{ dialogHeader }}</ng-template>
     <ng-template #content>
       <ng-container *ngTemplateOutlet="dialogContent"></ng-container>

@@ -6,3 +6,8 @@ export interface BuyerBody {
 export interface SupplierBody {
     name: string;
 }
+
+export interface ProductBody {
+    name: string;
+    price: number;
+}
