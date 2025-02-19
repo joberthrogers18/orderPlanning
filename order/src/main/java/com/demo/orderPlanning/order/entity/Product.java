@@ -9,13 +9,18 @@ import lombok.Setter;
 @Setter
 public class Product {
 
+    public Product(String name, Double price) {
+        this.name = name;
+        this.price = price;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private double price;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Order order;
 
 }
