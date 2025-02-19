@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
       {
         label: 'Pedidos',
         icon: 'pi pi-home',
+        routerLink: ['/'] 
       },
       {
         label: 'Fornecedores',
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
       {
         label: 'Clientes',
         icon: 'pi pi-fw pi-users',
-        routerLink: ['/'] 
+        routerLink: ['/clients'] 
       },
       {
         label: 'Produtos',
