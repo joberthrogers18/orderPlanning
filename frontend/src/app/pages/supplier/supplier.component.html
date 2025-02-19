@@ -1,61 +1,41 @@
-<div class="suppliers w-full h-full">
-  <div class="header">
-    <p class="title">Fornecedores</p>
-    <p-button (onClick)="showDialog()">Criar</p-button>
-  </div>
+<app-generic-page
+  [title]="'Fornecedores'"
+  [data]="suppliers"
+  [tableHeaders]="supplierTableHeaders"
+  [tableBody]="supplierTableBody"
+  [dialogHeader]="'Novo Fornecedor'"
+  [dialogContent]="supplierDialogContent"
+  [dialogFooter]="supplierDialogFooter"
+></app-generic-page>
 
-  <div class="card">
-    <p-table
-      [value]="suppliers"
-      showGridlines
-      stripedRows
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template #header>
-        <tr>
-          <th>Id</th>
-          <th>Nome</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-supplier>
-        <tr>
-          <td>{{ supplier.id }}</td>
-          <td>{{ supplier.name }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+<ng-template #supplierTableHeaders>
+  <tr>
+    <th>Id</th>
+    <th>Nome</th>
+  </tr>
+</ng-template>
 
-  <p-dialog
-    [(visible)]="isDialogVisible"
-    [modal]="true"
-    [style]="{ width: '25rem' }"
-  >
-    <ng-template #header> Novo Fornecedor </ng-template>
-    <div class="form-group">
-      <label for="username" class="form-label">Nome</label>
-      <input
-        pInputText
-        id="username"
-        class="form-input"
-        autocomplete="off"
-        [(ngModel)]="nameSupplier"
-      />
-    </div>
-    <ng-template #footer>
-      <p-button
-        label="Cancel"
-        [text]="true"
-        severity="secondary"
-        (click)="isDialogVisible = false"
-      />
-      <p-button
-        label="Save"
-        [outlined]="true"
-        severity="secondary"
-        (click)="isDialogVisible = false"
-        [disabled]=""
-      />
-    </ng-template>
-  </p-dialog>
-</div>
+<ng-template #supplierTableBody let-supplier>
+  <tr>
+    <td>{{ supplier.id }}</td>
+    <td>{{ supplier.name }}</td>
+  </tr>
+</ng-template>
+
+<ng-template #supplierDialogContent>
+  <div class="form-group">
+    <label for="username" class="form-label">Nome</label>
+    <input
+      pInputText
+      id="username"
+      class="form-input"
+      autocomplete="off"
+      [(ngModel)]="nameSupplier"
+    />
+  </div>
+</ng-template>
+
+<ng-template #supplierDialogFooter>
+  <p-button label="Cancel" [text]="true" severity="secondary" (click)="isDialogVisible = false" />
+  <p-button label="Save" [outlined]="true" severity="secondary" (click)="isDialogVisible = false" [disabled]="false" />
+</ng-template>

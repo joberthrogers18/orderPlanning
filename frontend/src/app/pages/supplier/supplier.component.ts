@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { GenericPageComponent } from '../../components/generic-page/generic-page.component';
 
 @Component({
   selector: 'app-supplier',
@@ -13,6 +14,7 @@ import { TableModule } from 'primeng/table';
     DialogModule,
     InputTextModule,
     FormsModule,
+    GenericPageComponent
   ],
   templateUrl: './supplier.component.html',
   styleUrl: './supplier.component.scss',
