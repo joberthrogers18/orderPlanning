@@ -1,0 +1,88 @@
+<app-generic-page
+  [title]="'Pedidos'"
+  [data]="orders"
+  [tableHeaders]="orderTableHeaders"
+  [tableBody]="orderTableBody"
+  [dialogHeader]="'Novo Produto'"
+  [dialogContent]="orderDialogContent"
+  [dialogFooter]="orderDialogFooter"
+></app-generic-page>
+
+<ng-template #orderTableHeaders>
+  <tr>
+    <th>Id</th>
+    <th>Comprador</th>
+    <th>Fornecedor</th>
+    <th>Produtos</th>
+    <th>Preço Total</th>
+  </tr>
+</ng-template>
+
+<ng-template #orderTableBody let-order>
+  <tr>
+    <td>{{ order.id }}</td>
+    <td>{{ order.buyer }}</td>
+    <td>{{ order.supplier }}</td>
+    <td>{{ order.products }}</td>
+    <td>{{ order.amount }}</td>
+  </tr>
+</ng-template>
+
+<ng-template #orderDialogContent>
+  <div class="form-group column">
+    <div class="w-full column">
+      <label for="name" class="form-label gap">Comprador</label>
+      <p-autoComplete
+        [(ngModel)]="buyerSelected"
+        [dropdown]="true"
+        [suggestions]="manipulationBuyerOptions"
+        (completeMethod)="search($event, 'buyer')"
+        field="name"
+        appendTo="body"
+        (onSelect)="onSelectDropdown($event, 'buyer')">
+      </p-autoComplete>
+    </div>
+
+    <div class="w-full column">
+      <label for="name" class="form-label gap">Fornecedor</label>
+      <p-autoComplete
+        [(ngModel)]="supplierSelected"
+        [dropdown]="true"
+        [suggestions]="manipulationSupplierOptions"
+        (completeMethod)="search($event, 'supplier')"
+        field="name"
+        appendTo="body"
+        (onSelect)="onSelectDropdown($event, 'supplier')">
+      </p-autoComplete>
+    </div>
+
+    <div class="w-full column">
+      <label for="name" class="form-label gap">Produtos</label>
+      <p-autoComplete
+        [(ngModel)]="productsSelected"
+        [dropdown]="true"
+        [suggestions]="manipulationProductOptions"
+        (completeMethod)="search($event, 'product')"
+        field="name"
+        appendTo="body"
+        (onSelect)="onSelectDropdown($event, 'product')">
+      </p-autoComplete>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #orderDialogFooter>
+  <p-button
+    label="Cancelar"
+    [text]="true"
+    severity="secondary"
+    (click)="isDialogVisible = false"
+  />
+  <p-button
+    label="Salvar"
+    [outlined]="true"
+    severity="secondary"
+    (click)="addOrder()"
+    [disabled]="false"
+  />
+</ng-template>
