@@ -1,5 +1,7 @@
 ## Projeto: Sistema de Pedidos
 
+https://github.com/user-attachments/assets/7c3eb0e9-877a-4e70-a0bb-30d16dfcab62
+
 ### Arquitetura
 Este projeto é composto por três componentes principais:
 
