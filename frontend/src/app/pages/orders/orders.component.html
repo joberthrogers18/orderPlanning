@@ -1,5 +1,10 @@
 <div class="loading" *ngIf="loading">
-  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+  <p-progress-spinner
+    strokeWidth="8"
+    fill="transparent"
+    animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }"
+  />
 </div>
 
 <app-generic-page
@@ -24,9 +29,16 @@
 <ng-template #orderTableBody let-order>
   <tr>
     <td>{{ order.id }}</td>
-    <td>{{ order.buyer.name }}</td>
-    <td>{{ order.supplier.name }}</td>
-    <td>{{ order.totalAmount | currency:'BRL':'symbol'  }}</td>
+    <td>{{ order.buyer }}</td>
+    <td>{{ order.supplier }}</td>
+    <td class="actions-column order-action">
+      {{ order.amount | currency : "BRL" : "symbol" }}
+      <p-button
+        label="Detalhes"
+        severity="info"
+        (click)="showOrderDetails(order)"
+      />
+    </td>
   </tr>
 </ng-template>
 
@@ -41,7 +53,8 @@
         (completeMethod)="search($event, 'buyer')"
         field="name"
         appendTo="body"
-        (onSelect)="onSelectDropdown($event, 'buyer')">
+        (onSelect)="onSelectDropdown($event, 'buyer')"
+      >
       </p-autoComplete>
     </div>
 
@@ -54,7 +67,8 @@
         (completeMethod)="search($event, 'supplier')"
         field="name"
         appendTo="body"
-        (onSelect)="onSelectDropdown($event, 'supplier')">
+        (onSelect)="onSelectDropdown($event, 'supplier')"
+      >
       </p-autoComplete>
     </div>
 
@@ -70,7 +84,7 @@
         multiple="true"
         (onSelect)="onSelectDropdown($event, 'product')"
         (onUnselect)="onUnselectDropdown($event)"
-        >
+      >
       </p-autoComplete>
     </div>
   </div>
@@ -93,3 +107,38 @@
 </ng-template>
 
 <p-toast></p-toast>
+
+<p-dialog
+  [(visible)]="isVisibleDialogDetails"
+  styleClass="order-dialog"
+  [style]="{ width: '40rem' }"
+  modal="true"
+>
+  <ng-template pTemplate="header">
+    <h2>Detalhes do pedido</h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="form-group">
+      <div class="info-item">
+        <label>Comprador:</label>
+        <div class="info-text">{{ selectedOrder?.buyer }}</div>
+      </div>
+      <div class="info-item">
+        <label>Fornecedor:</label>
+        <div class="info-text">{{ selectedOrder?.supplier }}</div>
+      </div>
+      <div class="info-item">
+        <label>Produtos:</label>
+        <ul class="info-list" *ngFor="let product of selectedOrder?.products">
+          <li>{{ product.name }}</li>
+        </ul>
+      </div>
+      <div class="info-item">
+        <label>Valor Total:</label>
+        <div class="info-text">
+          {{ selectedOrder?.totalAmount | currency : "BRL" : "symbol" }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

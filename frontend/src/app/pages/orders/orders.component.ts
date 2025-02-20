@@ -19,6 +19,8 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonModule } from '@angular/common';
+import { IOrder, ProductBody } from '../../shared/interfaces';
+import Product from '../../models/Product';
 
 interface DropdownOption {
   name: string;
@@ -53,7 +55,7 @@ export class OrdersComponent implements OnInit {
     id: number;
     buyer: string;
     supplier: number;
-    products: string;
+    products: ProductBody[];
     amount: number;
   }[] = [];
   buyersOptions: DropdownOption[] = [];
@@ -69,7 +71,9 @@ export class OrdersComponent implements OnInit {
   productsSelected: DropdownProduct[] = [];
 
   loading: boolean = false;
-  isDialogVisible = false;
+  isDialogVisible: boolean = false;
+  isVisibleDialogDetails: boolean = false;
+  selectedOrder: IOrder | null = null;
 
   constructor(
     private orderService: OrdersService,
@@ -80,8 +84,18 @@ export class OrdersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.orderService.getAllOrders().subscribe((orders) => {
-      this.orders = orders;
+    this.orderService.getAllOrders().subscribe((orders: IOrder[]) => {
+      this.orders = orders.map((order) => ({
+        id: order.id,
+        buyer: order.buyer.name,
+        supplier: order.supplier.id,
+        products: order.products.map((product: Product) => ({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+        })),
+        amount: order.totalAmount,
+      }));
     });
     this.productService.getAllProducts().subscribe((products) => {
       this.productsOptions = products.map((product) => ({
@@ -108,10 +122,6 @@ export class OrdersComponent implements OnInit {
     options: T[],
     query: string
   ): T[] {
-    const value = options.filter((item) =>
-      item.name.toLowerCase().includes(query.toLowerCase())
-    );
-
     return options.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
     );
@@ -155,9 +165,6 @@ export class OrdersComponent implements OnInit {
 
   addOrder() {
     this.isDialogVisible = false;
-    console.log('buyerSelected', this.buyerSelected);
-    console.log('supplierSelected', this.supplierSelected);
-    console.log('productsSelected', this.productsSelected);
   }
 
   onSelectDropdown(event: any, type: 'buyer' | 'supplier' | 'product') {
@@ -175,11 +182,8 @@ export class OrdersComponent implements OnInit {
         }
         break;
     }
-
-    console.log('productsSelected', this.productsSelected);
   }
   onUnselectDropdown(event: any) {
-    console.log('event', this.productsSelected);
     this.productsSelected = this.productsSelected.filter(
       (product: any) => product.value.name !== (event.value && event.value.name)
     );
@@ -192,22 +196,29 @@ export class OrdersComponent implements OnInit {
       (acc, product) => acc + product.price,
       0
     );
-    console.log({
-          buyerId: this.buyerSelected?.value,
-        supplierId: this.supplierSelected?.value,
-        productIds: this.productsSelected.map((product) => product.value),
-        amount: sumAllProducts
-      })
 
     this.orderService
       .createOrder({
         buyerId: this.buyerSelected?.value,
         supplierId: this.supplierSelected?.value,
         productIds: this.productsSelected.map((product) => product.value),
+        totalAmount: sumAllProducts
       })
       .subscribe(
         (order) => {
-          this.orders.push(order);
+          this.orders.push({
+            id: order.id,
+            buyer: order.buyer.name,
+            supplier: order.supplier.id,
+            products: order.products.map((product: Product) => {
+              return {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+              };
+            }),
+            amount: order.totalAmount,
+          });
           this.isDialogVisible = false;
           this.loading = false;
           this.productsSelected = [];
@@ -229,5 +240,16 @@ export class OrdersComponent implements OnInit {
           });
         }
       );
+  }
+
+  showOrderDetails(order: any) {
+    this.selectedOrder = {
+      id: order.id,
+      buyer: order.buyer,
+      supplier: order.supplier,
+      products: order.products,
+      totalAmount: order.amount,
+    };
+    this.isVisibleDialogDetails = true;
   }
 }

@@ -1,0 +1,83 @@
+.actions-column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.order-dialog {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+.order-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  padding: 1.5rem;
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.order-dialog .p-dialog-content {
+  padding: 2rem;
+  background-color: #ffffff;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-item label {
+  font-weight: 600;
+  color: #808080;
+  font-size: 1.1rem;
+}
+
+.info-item li {
+  font-size: 13px;
+  color: #363636;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.info-text {
+  background: #fdfdfd;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 12px;
+  color: #363636 !important;
+  font-weight: 800 !important;
+  font-size: 16px;
+}
+
+.info-text:hover {
+  background-color: #f1f8ff;
+  transform: translateY(-2px);
+}
+
+.info-list {
+  list-style-type: disc;
+  padding-left: 1.75rem;
+}
+
+.info-list li {
+  background: #fdfdfd;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.info-list li:hover {
+  background-color: #f1f8ff;
+  transform: translateY(-2px);
+}
+
+  
