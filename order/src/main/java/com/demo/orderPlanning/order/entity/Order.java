@@ -1,6 +1,6 @@
 package com.demo.orderPlanning.order.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,8 +23,8 @@ public class Order {
     @ManyToOne
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "order")
-    @JsonBackReference
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Product> products;
 
     private double totalAmount;

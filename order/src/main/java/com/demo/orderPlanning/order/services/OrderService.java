@@ -3,6 +3,7 @@ package com.demo.orderPlanning.order.services;
 import com.demo.orderPlanning.order.dtos.OrderBody;
 import com.demo.orderPlanning.order.entity.Buyer;
 import com.demo.orderPlanning.order.entity.Order;
+import com.demo.orderPlanning.order.entity.Product;
 import com.demo.orderPlanning.order.entity.Supplier;
 import com.demo.orderPlanning.order.repository.BuyerRepository;
 import com.demo.orderPlanning.order.repository.OrderRepository;
@@ -34,11 +35,14 @@ public class OrderService {
 
         order.setBuyer(getBuyerById(request.buyerId()));
         order.setSupplier(getSupplierById(request.supplierId()));
-        order.setProducts(productRepository.findAllById(request.productIds()));
+
+        List<Product> products = productRepository.findAllById(request.productIds());
+        products.forEach(product -> product.setOrder(order));
+        order.setProducts(products);
+
         order.setTotalAmount(request.totalAmount());
 
-        return null;
-//        return orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     public Optional<Order> getOrderById(Long id) {
