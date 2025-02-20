@@ -37,7 +37,8 @@ public class OrderService {
         order.setProducts(productRepository.findAllById(request.productIds()));
         order.setTotalAmount(request.totalAmount());
 
-        return orderRepository.save(order);
+        return null;
+//        return orderRepository.save(order);
     }
 
     public Optional<Order> getOrderById(Long id) {
