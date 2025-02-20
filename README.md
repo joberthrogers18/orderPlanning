@@ -44,4 +44,4 @@ Backend (Spring Boot): http://localhost:8080
 Banco de Dados (PostgreSQL): Acesse via localhost:5432 usando as credenciais definidas no arquivo docker-compose.yml:
 Usuário: postgres
 Senha: postgres
-Banco de Dados: meubanco
+Banco de Dados: order-db
