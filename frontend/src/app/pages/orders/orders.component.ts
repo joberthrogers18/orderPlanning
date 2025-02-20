@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -10,10 +10,23 @@ import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from 'primeng/autocomplete';
+import { OrdersService } from '../../services/orders.service';
+import { ProductsService } from '../../services/products.service';
+import { BuyersComponent } from '../buyers/buyers.component';
+import { SuppliersService } from '../../services/suppliers.service';
+import { BuyersService } from '../../services/buyers.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
 
 interface DropdownOption {
   name: string;
   value: number;
+}
+
+interface DropdownProduct extends DropdownOption {
+  price: number;
 }
 
 @Component({
@@ -27,64 +40,77 @@ interface DropdownOption {
     GenericPageComponent,
     InputNumberModule,
     AutoCompleteModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    CommonModule
   ],
+  providers: [OrdersService, ProductsService, BuyersComponent, SuppliersService, MessageService],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
   orders: {
     id: number;
     buyer: string;
     supplier: number;
     products: string;
     amount: number;
-  }[] = [
-    {
-      id: 1,
-      buyer: 'buyer 1',
-      supplier: 1,
-      products: 'product 1',
-      amount: 100.19,
-    },
-    {
-      id: 2,
-      buyer: 'buyer 2',
-      supplier: 2,
-      products: 'product 2',
-      amount: 242.25,
-    },
-  ];
-  buyersOptions: DropdownOption[] = [
-    { name: 'buyer 1', value: 1 },
-    { name: 'buyer 2', value: 2 },
-  ];
-  suppliersOptions: DropdownOption[] = [
-    { name: 'supplier 1', value: 1 },
-    { name: 'supplier 2', value: 2 },
-  ];
-  productsOptions: DropdownOption[] = [
-    { name: 'product 1', value: 1 },
-    { name: 'product 2', value: 2 },
-  ];
+  }[] = [];
+  buyersOptions: DropdownOption[] = [];
+  suppliersOptions: DropdownOption[] = [];
+  productsOptions: DropdownProduct[] = [];
 
   manipulationBuyerOptions: DropdownOption[] = this.buyersOptions;
   manipulationSupplierOptions: DropdownOption[] = this.suppliersOptions;
-  manipulationProductOptions: DropdownOption[] = this.productsOptions;
+  manipulationProductOptions: DropdownProduct[] = this.productsOptions;
 
   buyerSelected: DropdownOption | null = null;
   supplierSelected: DropdownOption | null = null;
-  productsSelected: DropdownOption[] = [];
+  productsSelected: DropdownProduct[] = [];
 
+  loading: boolean = false;
   isDialogVisible = false;
 
-  private filterOptions(
-    options: DropdownOption[],
+  constructor(
+    private orderService: OrdersService,
+    private productService: ProductsService,
+    private supplierService: SuppliersService,
+    private buyerService: BuyersService,
+    private messageService: MessageService
+  ) {}
+
+  ngOnInit(): void {
+    this.orderService.getAllOrders().subscribe((orders) => {
+      this.orders = orders;
+    });
+    this.productService.getAllProducts().subscribe((products) => {
+      this.productsOptions = products.map((product) => ({
+        name: product.name,
+        value: product.id,
+        price: product.price,
+      }));
+    });
+    this.buyerService.getAllBuyers().subscribe((buyers) => {
+      this.buyersOptions = buyers.map((buyer) => ({
+        name: buyer.name,
+        value: buyer.id,
+      }));
+    });
+    this.supplierService.getAllSuppliers().subscribe((suppliers) => {
+      this.suppliersOptions = suppliers.map((supplier) => ({
+        name: supplier.name,
+        value: supplier.id,
+      }));
+    })
+  }
+
+  private filterOptions<T extends DropdownOption>(
+    options: T[],
     query: string
-  ): DropdownOption[] {
+  ): T[] {
     const value = options.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
     );
-    console.log(query);
 
     return options.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
@@ -143,8 +169,65 @@ export class OrdersComponent {
         this.supplierSelected = event.value;
         break;
       case 'product':
-        this.productsSelected = event.value;
+        if (typeof event == 'object') {
+          const newProduct = [...this.productsSelected, event.value].filter((item)  => typeof item === 'object');
+          this.productsSelected = newProduct;
+        }
         break;
     }
+
+    console.log('productsSelected', this.productsSelected);
+  }
+  onUnselectDropdown(event: any) {
+    console.log('event', this.productsSelected);
+    this.productsSelected = this.productsSelected.filter(
+      (product: any) => product.value.name !== (event.value && event.value.name)
+    );
+  }
+
+  createNewOrder() {
+    this.loading = true;
+
+    const sumAllProducts = this.productsSelected.reduce(
+      (acc, product) => acc + product.price,
+      0
+    );
+    console.log({
+          buyerId: this.buyerSelected?.value,
+        supplierId: this.supplierSelected?.value,
+        productIds: this.productsSelected.map((product) => product.value),
+        amount: sumAllProducts
+      })
+
+    this.orderService
+      .createOrder({
+        buyerId: this.buyerSelected?.value,
+        supplierId: this.supplierSelected?.value,
+        productIds: this.productsSelected.map((product) => product.value),
+      })
+      .subscribe(
+        (order) => {
+          this.orders.push(order);
+          this.isDialogVisible = false;
+          this.loading = false;
+          this.productsSelected = [];
+          this.buyerSelected = null;
+          this.supplierSelected = null;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Pedido criado com sucesso!',
+          });
+        },
+        () => {
+          this.loading = false;
+          this.isDialogVisible = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Erro ao criar pedido! Tente novamente mais tarde!',
+          });
+        }
+      );
   }
 }

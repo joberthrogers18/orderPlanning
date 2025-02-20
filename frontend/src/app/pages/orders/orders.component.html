@@ -1,3 +1,7 @@
+<div class="loading" *ngIf="loading">
+  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+</div>
+
 <app-generic-page
   [title]="'Pedidos'"
   [data]="orders"
@@ -13,7 +17,6 @@
     <th>Id</th>
     <th>Comprador</th>
     <th>Fornecedor</th>
-    <th>Produtos</th>
     <th>Preço Total</th>
   </tr>
 </ng-template>
@@ -21,10 +24,9 @@
 <ng-template #orderTableBody let-order>
   <tr>
     <td>{{ order.id }}</td>
-    <td>{{ order.buyer }}</td>
-    <td>{{ order.supplier }}</td>
-    <td>{{ order.products }}</td>
-    <td>{{ order.amount }}</td>
+    <td>{{ order.buyer.name }}</td>
+    <td>{{ order.supplier.name }}</td>
+    <td>{{ order.totalAmount | currency:'BRL':'symbol'  }}</td>
   </tr>
 </ng-template>
 
@@ -61,11 +63,14 @@
       <p-autoComplete
         [(ngModel)]="productsSelected"
         [dropdown]="true"
-        [suggestions]="manipulationProductOptions"
+        [suggestions]="manipulationProductOptions || []"
         (completeMethod)="search($event, 'product')"
         field="name"
         appendTo="body"
-        (onSelect)="onSelectDropdown($event, 'product')">
+        multiple="true"
+        (onSelect)="onSelectDropdown($event, 'product')"
+        (onUnselect)="onUnselectDropdown($event)"
+        >
       </p-autoComplete>
     </div>
   </div>
@@ -82,7 +87,9 @@
     label="Salvar"
     [outlined]="true"
     severity="secondary"
-    (click)="addOrder()"
+    (click)="createNewOrder()"
     [disabled]="false"
   />
 </ng-template>
+
+<p-toast></p-toast>
